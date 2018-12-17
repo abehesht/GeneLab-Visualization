@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web:200,300,400,600,700,900');
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 98%;
+}
+
+#wrapper {
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.labs {
+    fill: #2E2D2E;
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.rows {
+    font-size: 8px;
+}
+
+#tooltip {
+    position: absolute;
+    width: 300px;
+    height: auto;
+    padding: 10px;
+    border-radius: 5px;
+    border-color: white;
+    border-style: solid;
+    border-width: 2px;
+    pointer-events: none;
+}
+
+#tooltip.hidden {
+    display: none;
+}
+
+#tooltip p {
+    margin: 0;
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+}
