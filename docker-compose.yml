@@ -1,0 +1,10 @@
+version: '3.0'
+
+services:
+  nginx:
+    build: 
+        context: ./nginx/.
+    ports:
+     - "8080:80"
+    volumes:
+     - ./nginx/web:/usr/share/nginx/html:ro
