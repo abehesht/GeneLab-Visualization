@@ -17,23 +17,24 @@ var canvas = d3.select("body")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var mice = d3.dsv(";", "../data/mice.csv", function (d) {
+var mice = d3.dsv(",", "../data/mice.csv", function (d) {
     i += 1;
     return {
         "x": i,
         "name": d.Name,
         "desc": d.Description,
-        "flt1": +d.FLT1.replace(/,/g, '\.'),
-        "flt2": +d.FLT2.replace(/,/g, '\.'),
-        "flt3": +d.FLT3.replace(/,/g, '\.'),
-        "flt4": +d.FLT4.replace(/,/g, '\.'),
-        "flt_avg": +d["Flight Mean"].replace(/,/g, '\.'),
-        "aem1": +d.AEM1.replace(/,/g, '\.'),
-        "aem2": +d.AEM2.replace(/,/g, '\.'),
-        "aem3": +d.AEM3.replace(/,/g, '\.'),
-        "aem4": +d.AEM4.replace(/,/g, '\.'),
-        "aem_avg": +d["AEM Mean"].replace(/,/g, '\.'),
-        "flt_vs_aem": +d["F vs AEM"].replace(/,/g, '\.')
+        "flt1": +d.FLT1,
+        "flt2": +d.FLT2,
+        "flt3": +d.FLT3,
+        "flt4": +d.FLT4,
+        "flt_avg": +d["Flight Mean"],
+        "aem1": +d.AEM1,
+        "aem2": +d.AEM2,
+        "aem3": +d.AEM3,
+        "aem4": +d.AEM4,
+        "aem_avg": +d["AEM Mean"],
+        "flt_vs_aem": +d["F vs AEM"],
+        "cluster": d.cluster
     };
 });
 
@@ -53,10 +54,10 @@ mice.then(data => {
         .range([height,0]);
 
     var xAxis = d3.axisBottom(x)
-        .ticks(5)                            // request 5 ticks on the x axis
+        .ticks(5);                           // request 5 ticks on the x axis
 
     var yAxis = d3.axisLeft(y)                // y Axis
-        .ticks(4)
+        .ticks(4);
 
     canvas.append("g")                            // render the Y axis in the inner plot area
         .attr("class", "y axis")
