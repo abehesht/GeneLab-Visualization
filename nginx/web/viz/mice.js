@@ -77,9 +77,17 @@ function update() {
         canvas.selectAll(".dot")
             .attr("fill", function(d) {
                 if (d.cluster == text) {
+                    d3.select(this).raise(); 
                     return colorScale(d.cluster);
                 } else {
                     return "black";
+                }
+            })
+            .style("stroke", function(d) {
+                if (d.cluster == text) {
+                    return "black";
+                } else {
+                    return "transparent";
                 }
             })
             .attr("r", function(d) {
