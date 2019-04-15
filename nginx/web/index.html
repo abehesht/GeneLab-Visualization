@@ -9,10 +9,23 @@
     <script src="d3/d3.js"></script>
 </head>
 <body>
-    <select id="clusters"  onchange="update()">
-        <option disabled selected value> -- select a cluster -- </option>
-    </select>
-    <br>
-    <script src="viz/mice.js"></script>
+    <div class="wrapper">
+        <div class="vb one">Value box #1</div>
+        <div class="vb two">Value box #2</div>
+        <div class="vb three">Value box #3</div>
+        <div class="vb four">Value box #4</div>
+        <div class="optionarea">
+            Dataset
+            <select class="option" id="dataset"><option disabled selected value> Mice </option></select>
+            First cluster
+            <select class="option" id="clusterX" onchange="update()"><option disabled selected value> -- please select cluster of interest -- </option></select>
+            Second cluster
+            <select class="option" id="clusterY"><option disabled value> -- please select -- </option></select>
+        </div>
+        <div class="table statistics">Statistics table</div>
+        <div class="table genes">Genes table</div>
+        <div class="plot"></div>
+    </div>
+    <script src="viz/mice.js"></script> 
 </body>
 </html>
