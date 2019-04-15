@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Oxygen:300,400,700');
+
+* {
+  box-sizing: border-box;
+  background-color: #F3F6F9;
+  font-family: 'Oxygen', sans-serif;
+  font-size: 14px;
+}
+
+.wrapper {
+  max-width: 1600px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
+  grid-auto-rows: minmax(150px, auto);
+}
+
+.wrapper > div {
+  border: 1px solid #EBECF2;
+  border-radius: 5px;
+  background-color: #FFF;
+  padding: 1em;
+  color: #0F0F10;
+}
+
+.vb {
+  grid-row: 1;
+}
+
+.one {
+  grid-column: 1;
+}
+
+.two {
+  grid-column: 2;
+}
+
+.three {
+  grid-column: 3;
+}
+
+.four {
+  grid-column: 4;
+}
+
+.optionarea {
+  grid-row: 2;
+  grid-column: 1;
+  font-weight: 700;
+}
+
+.statistics {
+  grid-row: 3/5;
+  grid-column: 1;
+}
+
+.genes {
+  grid-row: 5/7;
+  grid-column: 1;
+}
+
+.plot {
+  grid-row: 2/7;
+  grid-column: 2/5;
+}
+
+.option {
+  margin: 2px 0 15px 0;
+  width: 100%;
+  background-color: #FFF;
+}
