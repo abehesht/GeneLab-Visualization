@@ -41,13 +41,56 @@ var mice = d3.dsv(",", "../data/mice.csv", function (d) {
 function xValue(d) { return d.x; }
 function yValue(d) { return d.flt_vs_aem; }
 
+function fillOutOptionList(data) {
+    const clusters = [...new Set(data.map(d => d.cluster))].sort();
+
+    var select = document.getElementById("clusters");
+    for(index in clusters) {
+        select.options[select.options.length] = new Option(clusters[index], index);
+    }
+}
+
+function update() {
+    var sel = document.getElementById("clusters");
+    var text = sel.options[sel.selectedIndex].text;
+    console.log(text);
+
+    mice.then(data => {
+        canvas.selectAll(".dot")                      // plot a circle at each data location
+            // .data(data)
+            .attr("fill", function(d) {
+                if (d.cluster == text) {
+                    return "blue";
+                } else {
+                    return "black";
+                }
+            })
+            .attr("r", function(d) {
+                if (d.cluster == text) {
+                    return 4;
+                } else {
+                    return 3;
+                }
+            })
+            .style("opacity", function(d) {
+                if (d.cluster == text) {
+                    return 1;
+                } else {
+                    return 0.05;
+                }
+            });
+    });
+
+    
+}
+
 mice.then(data => {
 
-    console.log(data);
+    fillOutOptionList(data);
 
     var x = d3.scaleLinear()                // interpolator for X axis -- inner plot region
-    .domain(d3.extent(data,xValue))
-    .range([0,width]);
+        .domain(d3.extent(data,xValue))
+        .range([0,width]);
 
     var y = d3.scaleLinear()                // interpolator for Y axis -- inner plot region
         .domain(d3.extent(data,yValue))
@@ -57,7 +100,7 @@ mice.then(data => {
         .ticks(5);                           // request 5 ticks on the x axis
 
     var yAxis = d3.axisLeft(y)                // y Axis
-        .ticks(4);
+        .ticks(10);
 
     canvas.append("g")                            // render the Y axis in the inner plot area
         .attr("class", "y axis")
@@ -98,7 +141,7 @@ mice.then(data => {
         .attr("class", "dot")
         .attr("cx", function(d) { return x(d.x); } )
         .attr("cy", function(d) { return y(d.flt_vs_aem); } )
-        .style("opacity", 0.10)
-        .attr("r", 5);
+        .style("opacity", 0.05)
+        .attr("r", 2);
 
 });
