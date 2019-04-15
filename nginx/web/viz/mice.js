@@ -1,7 +1,7 @@
 // Set margin convention (link: https://bl.ocks.org/mbostock/3019563)
 var margin = {top: 50, right: 50, bottom: 50, left: 50},
     padding = {top: 0, right: 0, bottom: 0, left: 0},
-    outerWidth = 1200,
+    outerWidth = 1150,
     outerHeight = 800,
     innerWidth = outerWidth - margin.left - margin.right,
     innerHeight = outerHeight - margin.top - margin.bottom,
@@ -10,11 +10,17 @@ var margin = {top: 50, right: 50, bottom: 50, left: 50},
     var i = -1;
 
 // Create canvas
-var canvas = d3.select("body")
+var canvas = d3.select(".plot")
     .append("svg")
     .attr("width", outerWidth)
-    .attr("height", outerHeight)
-    .append("g")
+    .attr("height", outerHeight);
+    
+canvas.append("rect")
+    .attr("width", "100%")
+    .attr("height", "100%")
+    .attr("fill", "white");
+    
+var canvas = canvas.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var mice = d3.dsv(",", "../data/mice.csv", function (d) {
@@ -44,20 +50,18 @@ function yValue(d) { return d.flt_vs_aem; }
 function fillOutOptionList(data) {
     const clusters = [...new Set(data.map(d => d.cluster))].sort();
 
-    var select = document.getElementById("clusters");
+    var select = document.getElementById("clusterX");
     for(index in clusters) {
         select.options[select.options.length] = new Option(clusters[index], index);
     }
 }
 
 function update() {
-    var sel = document.getElementById("clusters");
+    var sel = document.getElementById("clusterX");
     var text = sel.options[sel.selectedIndex].text;
-    console.log(text);
 
     mice.then(data => {
-        canvas.selectAll(".dot")                      // plot a circle at each data location
-            // .data(data)
+        canvas.selectAll(".dot")
             .attr("fill", function(d) {
                 if (d.cluster == text) {
                     return "blue";
