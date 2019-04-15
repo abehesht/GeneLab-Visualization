@@ -70,3 +70,12 @@
   width: 100%;
   background-color: #FFF;
 }
+
+.tooltip {
+  position: absolute;
+  border-radius: 5px;
+  width: auto;
+  min-width: 10px !important;
+  padding: 10px 15px 10px 15px;
+  pointer-events: none;
+}

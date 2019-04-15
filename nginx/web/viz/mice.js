@@ -9,12 +9,20 @@ var margin = {top: 50, right: 50, bottom: 50, left: 50},
     height = innerHeight - padding.top - padding.bottom;
     var i = -1;
 
+// Add tooltip
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+// Color scale
+var color = d3.scaleOrdinal(d3.schemePaired);
+
 // Create canvas
 var canvas = d3.select(".plot")
     .append("svg")
     .attr("width", outerWidth)
     .attr("height", outerHeight);
-    
+
 canvas.append("rect")
     .attr("width", "100%")
     .attr("height", "100%")
@@ -56,6 +64,11 @@ function fillOutOptionList(data) {
     }
 }
 
+function defineClusterColors(data) {
+    const clusters = [...new Set(data.map(d => d.cluster))].sort();
+    colorScale = d3.scaleOrdinal(d3.schemePaired).domain(clusters);
+}
+
 function update() {
     var sel = document.getElementById("clusterX");
     var text = sel.options[sel.selectedIndex].text;
@@ -64,14 +77,14 @@ function update() {
         canvas.selectAll(".dot")
             .attr("fill", function(d) {
                 if (d.cluster == text) {
-                    return "blue";
+                    return colorScale(d.cluster);
                 } else {
                     return "black";
                 }
             })
             .attr("r", function(d) {
                 if (d.cluster == text) {
-                    return 4;
+                    return 5;
                 } else {
                     return 3;
                 }
@@ -82,15 +95,31 @@ function update() {
                 } else {
                     return 0.05;
                 }
+            })
+            .on("mouseover", function(d) {
+                if (d.cluster == text) {
+                    tooltip.transition()
+                         .duration(200)
+                         .style("background-color", colorScale(d.cluster))
+                         .style("opacity", .9);
+                    tooltip.html(d.name)
+                         .style("left", (d3.event.pageX + 5) + "px")
+                         .style("top", (d3.event.pageY - 28) + "px");
+                }
+            })
+            .on("mouseout", function(d) {
+                tooltip.transition()
+                     .duration(500)
+                     .style("opacity", 0);
             });
     });
-
     
 }
 
 mice.then(data => {
 
     fillOutOptionList(data);
+    defineClusterColors(data);
 
     var x = d3.scaleLinear()                // interpolator for X axis -- inner plot region
         .domain(d3.extent(data,xValue))
