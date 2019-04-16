@@ -30,6 +30,15 @@ canvas.append("rect")
 var canvas = canvas.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+// Add NASA logo
+canvas.append('svg:image')
+    .attr('xlink:href', '/graphics/nasa-logo.svg')
+    .attr('x', 75)
+    .attr('y', 50)
+    .attr('width', width - 100)
+    .attr('height', height - 100)
+    .attr("opacity", 0.1);
+
 // Load data
 var mice = d3.dsv(",", "../data/mice.csv", function (d) {
     i += 1;
@@ -71,6 +80,13 @@ function update() {
     
 }
 
+function updateSignificanceLevel() {
+    var level = document.getElementById("significance").value;
+    d3.select(".significanceZone")
+        .attr("y", yScale(level))
+        .attr("height", (yScale(0) - yScale(level)) * 2);
+}
+
 // Define initial function which will define axis, labels and draw circles
 function initial() {
     mice.then(data => {
@@ -79,12 +95,12 @@ function initial() {
         defineClusterColors(data);
     
         // Define scales
-        var x = d3.scaleLinear().domain(d3.extent(data,xValue)).range([0,width]);
-        var y = d3.scaleLinear().domain(d3.extent(data,yValue)).range([height,0]);
+        xScale = d3.scaleLinear().domain(d3.extent(data,xValue)).range([0,width]);
+        yScale = d3.scaleLinear().domain(d3.extent(data,yValue)).range([height,0]);
     
         // Define axis
-        var xAxis = d3.axisBottom(x).ticks(5);
-        var yAxis = d3.axisLeft(y).ticks(10);
+        var xAxis = d3.axisBottom(xScale).ticks(5);
+        var yAxis = d3.axisLeft(yScale).ticks(10);
     
         // Render y-axis
         canvas.append("g")
@@ -125,14 +141,25 @@ function initial() {
             .text("Flight mean vs. AEM mean");
     
         // Draw circles
-        canvas.selectAll(".dot")
+        canvas.selectAll("dot")
             .data(data)
             .enter().append("circle")
             .attr("class", "dot")
-            .attr("cx", d => x(d.x))
-            .attr("cy", d => y(d.flt_vs_aem))
+            .attr("cx", d => xScale(d.x))
+            .attr("cy", d => yScale(d.flt_vs_aem))
             .style("opacity", 0.5)
             .attr("r", 1);
+
+            // Append rectangle for significance zone
+            var level = document.getElementById("significance").value;
+            canvas.append("rect")
+                .attr("class", "significanceZone")
+                .attr("x", 0)
+                .attr("y", yScale(level))
+                .attr("height", (yScale(0) - yScale(level)) * 2)
+                .attr("width", d3.max(data, d => d.x))
+                .attr("fill", "red")
+                .attr("opacity", 0.25);
     });
 }
 
