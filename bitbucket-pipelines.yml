@@ -1,0 +1,13 @@
+# IP 159.89.30.213
+
+options:
+  docker: true
+
+pipelines:
+  branches:
+    master:
+      - step:
+          name: Deploy to dasa-visualisations (159.89.30.213)
+          script:
+            - cat deploy.sh | ssh root@159.89.30.213
+            - echo "Deploy step finished"
