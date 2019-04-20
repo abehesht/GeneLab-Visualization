@@ -1,10 +1,10 @@
 // Define helper to easily get x and y values later on
-function xValue(d) { return d.x; }
-function yValue(d) { return d.flt_vs_aem; }
+function xValue(d, i) { return i; }
+function yValue(d) { return d.FvsAEM; }
 
 // Define function to fill out clusterX option dropdown with cluster values
 function fillOutOptionList(data) {
-    const clusters = [...new Set(data.map(d => d.cluster))].sort();
+    const clusters = [...new Set(data.map(d => d.cluster_name))].sort();
 
     var select = document.getElementById("clusterX");
     for(index in clusters) {
@@ -14,7 +14,7 @@ function fillOutOptionList(data) {
 
 // Define cluster colors
 function defineClusterColors(data) {
-    const clusters = [...new Set(data.map(d => d.cluster))].sort();
+    const clusters = [...new Set(data.map(d => d.cluster_name))].sort();
     colorScale = d3.scaleOrdinal(d3.schemePaired).domain(clusters);
 }
 
@@ -26,9 +26,9 @@ function selectedCluster() {
 
 // Define fill color for selected cluster
 function activeClusterFill(d) {
-    if (d.cluster == text) {
+    if (d.cluster_name == text) {
         d3.select(this).raise(); 
-        return colorScale(d.cluster);
+        return colorScale(d.cluster_name);
     } else {
         return "black";
     }
@@ -36,28 +36,28 @@ function activeClusterFill(d) {
 
 // Define stroke color for selected cluster
 function activeClusterStroke(d) {
-    return (d.cluster == text) ? "black" : "transparent";
+    return (d.cluster_name == text) ? "black" : "transparent";
 }
 
 // Define radius for selected cluster
 function activeClusterRadius(d) {
-    return (d.cluster == text) ? 5 : 1;
+    return (d.cluster_name == text) ? 5 : 1;
 }
 
 // Define opacity for selected cluster
 function activeClusterOpacity(d) {
-    return (d.cluster == text) ? 1 : 0.5;
+    return (d.cluster_name == text) ? 1 : 0.5;
 }
 
 // Define mouseover action (tooltip appear) for selected cluster
 function activeClusterMouseover(d) {
-    if (d.cluster == text) {
+    if (d.cluster_name == text) {
         tooltip.transition()
              .duration(200)
-             .style("background-color", colorScale(d.cluster))
+             .style("background-color", colorScale(d.cluster_name))
              .style("opacity", .9);
 
-        tooltip.html(d.name)
+        tooltip.html(d.Name)
              .style("left", (d3.event.pageX) + "px")
              .style("top", (d3.event.pageY) + "px");
     }
