@@ -148,7 +148,7 @@ function initial() {
             .attr("text-anchor", "end")
             .attr("x", width - 6)
             .attr("y", height - 6)
-            .text("Made by Alfredsen og Steenssøn, 2019");
+            .text("Alfredsen og Steenssøn, 2019");
     });
 }
 
