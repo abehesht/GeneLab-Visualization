@@ -65,6 +65,10 @@
   grid-column: 2/5;
 }
 
+#plot {
+  padding: 0px 0px 0px 0px;
+}
+
 .option {
   margin: 5px 0 20px 0;
   width: 100%;
@@ -79,4 +83,13 @@
   min-width: 10px !important;
   padding: 10px 15px 10px 15px;
   pointer-events: none;
+}
+
+#significanceLevel {
+  font-weight: 300;
+  background-color: #FFF;
+}
+
+#clusterY {
+  background-color: #cdcdcd;
 }
