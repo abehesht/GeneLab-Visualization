@@ -46,7 +46,12 @@ function activeClusterRadius(d) {
 
 // Define opacity for selected cluster
 function activeClusterOpacity(d) {
-    return (d.cluster_name == text) ? 1 : 0.5;
+    var level = document.getElementById("significance").value;
+    if (d.FvsAEM < level && d.FvsAEM > -level) {
+        return 0.1
+    } else {
+        return (d.cluster_name == text) ? 1 : 0.5;
+    }
 }
 
 // Define mouseover action (tooltip appear) for selected cluster
