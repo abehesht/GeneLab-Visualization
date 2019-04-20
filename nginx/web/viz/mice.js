@@ -40,26 +40,7 @@ canvas.append('svg:image')
     .attr("opacity", 0.1);
 
 // Load data
-var mice = d3.dsv(",", "../data/mice.csv", function (d) {
-    i += 1;
-    return {
-        "x": i,
-        "name": d.Name,
-        "desc": d.Description,
-        "flt1": +d.FLT1,
-        "flt2": +d.FLT2,
-        "flt3": +d.FLT3,
-        "flt4": +d.FLT4,
-        "flt_avg": +d["Flight Mean"],
-        "aem1": +d.AEM1,
-        "aem2": +d.AEM2,
-        "aem3": +d.AEM3,
-        "aem4": +d.AEM4,
-        "aem_avg": +d["AEM Mean"],
-        "flt_vs_aem": +d["F vs AEM"],
-        "cluster": d.cluster
-    };
-});
+var mice = d3.json("../data/glds4.json", d => d);
 
 // Define update function which will be called everytime the user selects
 // a cluster from the clusterX option
@@ -91,12 +72,16 @@ function updateSignificanceLevel() {
 function initial() {
     mice.then(data => {
 
+        // var data = data.sort((a, b) => (a.FvsAEM > b.FvsAEM) ? 1 : -1)
+
+        console.log(data);
+
         fillOutOptionList(data);
         defineClusterColors(data);
     
         // Define scales
-        xScale = d3.scaleLinear().domain(d3.extent(data,xValue)).range([0,width]);
-        yScale = d3.scaleLinear().domain(d3.extent(data,yValue)).range([height,0]);
+        xScale = d3.scaleLinear().domain(d3.extent(data, xValue)).range([0,width]);
+        yScale = d3.scaleLinear().domain(d3.extent(data, yValue)).range([height,0]);
     
         // Define axis
         var xAxis = d3.axisBottom(xScale).ticks(5);
@@ -145,21 +130,21 @@ function initial() {
             .data(data)
             .enter().append("circle")
             .attr("class", "dot")
-            .attr("cx", d => xScale(d.x))
-            .attr("cy", d => yScale(d.flt_vs_aem))
+            .attr("cx", (d,i) => xScale(i))
+            .attr("cy", d => yScale(d.FvsAEM))
             .style("opacity", 0.5)
             .attr("r", 1);
 
-            // Append rectangle for significance zone
-            var level = document.getElementById("significance").value;
-            canvas.append("rect")
-                .attr("class", "significanceZone")
-                .attr("x", 0)
-                .attr("y", yScale(level))
-                .attr("height", (yScale(0) - yScale(level)) * 2)
-                .attr("width", d3.max(data, d => d.x))
-                .attr("fill", "red")
-                .attr("opacity", 0.25);
+        // Append rectangle for significance zone
+        var level = document.getElementById("significance").value;
+        canvas.append("rect")
+            .attr("class", "significanceZone")
+            .attr("x", 0)
+            .attr("y", yScale(level))
+            .attr("height", (yScale(0) - yScale(level)) * 2)
+            .attr("width", d3.max(data, (d,i) => i))
+            .attr("fill", "red")
+            .attr("opacity", 0.25);
     });
 }
 
