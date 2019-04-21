@@ -75,7 +75,6 @@ function activeClusterMouseout(d) {
 
 function writeGeneTable(data, cluster_name) {
     var geneTable = document.getElementById("geneTable");
-    // console.log(geneTable);
     function insertGeneCell(geneTable, geneName, geneDescription) {
         var row = geneTable.insertRow(-1);
         var cell1 = row.insertCell(0);
@@ -83,7 +82,6 @@ function writeGeneTable(data, cluster_name) {
         cell1.innerHTML = geneName;
         cell2.innerHTML = geneDescription;
     }
-    console.log('clustername: ', cluster_name);
     var tableHeaderRowCount = 1;
 
     var rowCount = geneTable.rows.length;
@@ -98,9 +96,70 @@ function writeGeneTable(data, cluster_name) {
             }
         });
     }
-    
+}
 
-    // insertGeneCell(geneTable, 'Gene1', '12-gene-3,3-description');
-    // insertGeneCell(geneTable, 'Gene2', '16-gene-3,3-description');
+function writeStatsTable(data, cluster_name) {
+    if (data != undefined) {
+        // Calculate for cluster
+        var clusterMinCell = document.getElementById("clusterMinCell");
+        var clusterMin = 99;
+        var clusterMaxCell = document.getElementById("clusterMaxCell");
+        var clusterMax = -99;
+        var clusterSummed = 0;
+        var clusterCount = 0;
+        var clusterMeanCell = document.getElementById("clusterMeanCell");
+        var clusterAllDiffs = [];
 
+        var popMinCell = document.getElementById("popMinCell");
+        var popMin = 99;
+        var popMaxCell = document.getElementById("popMaxCell");
+        var popMax = -99;
+        var popSummed = 0;
+        var popCount = 0;
+        var popMeanCell = document.getElementById("popMeanCell");
+        var popAllDiffs = [];
+        data.forEach(gene => {
+            if (gene.cluster_name == cluster_name) {
+                // Min
+                if (gene.FvsAEM < clusterMin) {
+                    clusterMin = gene.FvsAEM;
+                }
+                // Max
+                if (gene.FvsAEM > clusterMax) {
+                    clusterMax = gene.FvsAEM;
+                }
+                // Mean and count
+                clusterSummed += gene.FvsAEM;
+                clusterCount += 1;
+                clusterAllDiffs.push(gene.FvsAEM);
+            }
+            // Min
+            if (gene.FvsAEM < popMin) {
+                popMin = gene.FvsAEM;
+            }
+            // Max
+            if (gene.FvsAEM > popMax) {
+                popMax = gene.FvsAEM;
+            }
+            // Mean and count
+            popSummed += gene.FvsAEM;
+            popCount += 1;
+            popAllDiffs.push(gene.FvsAEM);
+        });
+        clusterCountCell.innerText = clusterCount;
+        clusterMinCell.innerText = math.round(clusterMin, 5);
+        clusterMaxCell.innerText = math.round(clusterMax, 5);
+        clusterMeanCell.innerText = math.round((clusterSummed / clusterCount), 5);
+        clusterMedianCell.innerText = math.round(math.median(clusterAllDiffs), 5); // TODO: Round this
+        clusterStdCell.innerText = math.round(math.std(clusterAllDiffs), 5); // TODO: Round this
+
+        popCountCell.innerText = popCount;
+        popMinCell.innerText = math.round(popMin, 5);
+        popMaxCell.innerText = math.round(popMax, 5);
+        popMeanCell.innerText = math.round((popSummed / popCount), 5);
+        popMedianCell.innerText = math.round(math.median(popAllDiffs), 5); // TODO: Round this
+        popStdCell.innerText = math.round(math.std(popAllDiffs), 5); // TODO: Round this
+
+
+    }
 }

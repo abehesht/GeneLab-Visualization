@@ -60,6 +60,7 @@ function update() {
             .on("mouseover", activeClusterMouseover)
             .on("mouseout", activeClusterMouseout);
         writeGeneTable(data, text);
+        writeStatsTable(data, text);
     });
     
 }

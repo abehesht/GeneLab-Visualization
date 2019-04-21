@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,7 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" media="screen" href="css/main.css">
     <script src="d3/d3.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.9.0/math.min.js"></script>
 </head>
+
 <body>
     <div class="wrapper">
         <div class="vb one">Value box #1</div>
@@ -16,19 +19,76 @@
         <div class="vb four">Value box #4</div>
         <div class="optionarea">
             Dataset
-            <select class="option" id="dataset"><option disabled selected value> Mice </option></select>
+            <select class="option" id="dataset">
+                <option disabled selected value> Mice </option>
+            </select>
             First cluster
-            <select class="option" id="clusterX" onchange="update()"><option disabled selected value> -- please select cluster of interest -- </option></select>
+            <select class="option" id="clusterX" onchange="update()">
+                <option disabled selected value> -- please select cluster of interest -- </option>
+            </select>
             Second cluster
-            <select class="option" id="clusterY"><option disabled value> -- please select -- </option></select>
+            <select class="option" id="clusterY">
+                <option disabled value> -- please select -- </option>
+            </select>
             Significance level <span id="significanceLevel">(0.26)</span>
-            <input type="range" min="0" max="1" value="0.26" step="0.01" class="option" id="significance" oninput="updateSignificanceLevel()">
+            <input type="range" min="0" max="1" value="0.26" step="0.01" class="option" id="significance"
+                oninput="updateSignificanceLevel()">
         </div>
-        <div class="table statistics" style="padding: 0em;">Statistics table</div>
-        <div class="table genes" style="padding: 0em;"><table id="geneTable"><thead><tr><th colspan="2">Genes in cluster</th></tr></thead></table></div>
+        <div class="table statistics" style="padding: 0em;overflow: auto;">
+            <table id="statsTable">
+                <thead>
+                    <tr>
+                        <th colspan="3">Statistics of cluster vs. population</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Count</td>
+                        <td id="clusterCountCell" class="statsCell">…</td>
+                        <td id="popCountCell" class="statsCell">…</td>
+                    </tr>
+                    <tr>
+                        <td>Min</td>
+                        <td id="clusterMinCell" class="statsCell">…</td>
+                        <td id="popMinCell" class="statsCell">…</td>
+                    </tr>
+                    <tr>
+                        <td>Max</td>
+                        <td id="clusterMaxCell" class="statsCell">…</td>
+                        <td id="popMaxCell" class="statsCell">…</td>
+                    </tr>
+                    <tr>
+                        <td>Mean</td>
+                        <td id="clusterMeanCell" class="statsCell">…</td>
+                        <td id="popMeanCell" class="statsCell">…</td>
+                    </tr>
+                    <tr>
+                        <td>Median</td>
+                        <td id="clusterMedianCell" class="statsCell">…</td>
+                        <td id="popMedianCell" class="statsCell">…</td>
+                    </tr>
+                    <tr>
+                        <td>Std</td>
+                        <td id="clusterStdCell" class="statsCell">…</td>
+                        <td id="popStdCell" class="statsCell">…</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <div class="table genes genetable" style="padding: 0em;overflow: auto;">
+            <table id="geneTable">
+                <thead>
+                    <tr>
+                        <th colspan="2">Genes in cluster</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
         <div class="plot" id="plot"></div>
     </div>
-    <script src="viz/mice_helper_foos.js"></script> 
-    <script src="viz/mice.js"></script> 
+    <script src="viz/mice_helper_foos.js"></script>
+    <script src="viz/mice.js"></script>
 </body>
+
 </html>
