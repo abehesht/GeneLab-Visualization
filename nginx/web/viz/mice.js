@@ -78,6 +78,34 @@ function updateSignificanceLevel() {
                 return 0.1
             }
         })
+
+    mice.then(data => {significantGenes(data)});
+}
+
+function significantGenes(data) {
+    var level = document.getElementById("significance").value;
+    var count = 0;
+
+    for(var i = 0; i < data.length; ++i){
+        if(data[i].FvsAEM >= level | data[i].FvsAEM <= -level)
+            count++;
+    }
+    document.getElementById('vbtwo').innerHTML = count;
+
+    var count = 0;
+    for(var i = 0; i < data.length; ++i){
+        if(data[i].FvsAEM >= level)
+            count++;
+    }
+    document.getElementById('vbthree').innerHTML = count;
+
+    var count = 0;
+    for(var i = 0; i < data.length; ++i){
+        if(data[i].FvsAEM <= -level)
+            count++;
+    }
+    document.getElementById('vbfour').innerHTML = count;
+
 }
 
 // Define initial function which will define axis, labels and draw circles
@@ -154,6 +182,9 @@ function initial() {
             .attr("x", width - 6)
             .attr("y", height - 6)
             .text("Alfredsen og Steenssøn, 2019");
+
+        significantGenes(data);
+        document.getElementById('vbone').innerHTML = data.length;
     });
 }
 
