@@ -91,12 +91,14 @@ function writeGeneTable(data, cluster_name) {
         geneTable.deleteRow(tableHeaderRowCount);
     }
 
-
-    data.forEach(gene => {
-        if (gene.cluster_name == cluster_name) {
-            insertGeneCell(geneTable, gene.Name, gene.Description)
-        }
-    });
+    if (data != undefined) {
+        data.forEach(gene => {
+            if (gene.cluster_name == cluster_name) {
+                insertGeneCell(geneTable, gene.Name, gene.Description)
+            }
+        });
+    }
+    
 
     // insertGeneCell(geneTable, 'Gene1', '12-gene-3,3-description');
     // insertGeneCell(geneTable, 'Gene2', '16-gene-3,3-description');
