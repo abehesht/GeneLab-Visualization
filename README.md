@@ -1,8 +1,8 @@
 # NASA illustration of genes
 
-In the terminal: python3 -m http.server 666
+In the terminal: docker-compose up --build
 
-Then go to: localhost:666
+In the browser: localhost:8080
 
 # GeneLab-Visualization
 Visualization tools and platforms for GeneLab
