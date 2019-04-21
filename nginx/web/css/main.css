@@ -93,3 +93,10 @@
 #clusterY {
   background-color: #cdcdcd;
 }
+
+.vbnum {
+  font-weight: 700;
+  font-size: 80px;
+  background-color: #FFF;
+  float: right;
+}
