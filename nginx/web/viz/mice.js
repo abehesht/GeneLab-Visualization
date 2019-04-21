@@ -59,6 +59,7 @@ function update() {
             .style("opacity", activeClusterOpacity)
             .on("mouseover", activeClusterMouseover)
             .on("mouseout", activeClusterMouseout);
+        writeGeneTable(data, text);
     });
     
 }
@@ -88,6 +89,9 @@ function initial() {
 
         fillOutOptionList(data);
         defineClusterColors(data);
+
+        // Add geneTable
+        writeGeneTable();
     
         // Define scales
         xScale = d3.scaleLinear().domain(d3.extent(data, xValue)).range([0,width]);

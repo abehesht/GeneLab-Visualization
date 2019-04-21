@@ -7,7 +7,7 @@ function fillOutOptionList(data) {
     const clusters = [...new Set(data.map(d => d.cluster_name))].sort();
 
     var select = document.getElementById("clusterX");
-    for(index in clusters) {
+    for (index in clusters) {
         select.options[select.options.length] = new Option(clusters[index], index);
     }
 }
@@ -27,7 +27,7 @@ function selectedCluster() {
 // Define fill color for selected cluster
 function activeClusterFill(d) {
     if (d.cluster_name == text) {
-        d3.select(this).raise(); 
+        d3.select(this).raise();
         return colorScale(d.cluster_name);
     } else {
         return "black";
@@ -58,17 +58,47 @@ function activeClusterOpacity(d) {
 function activeClusterMouseover(d) {
     if (d.cluster_name == text) {
         tooltip.transition()
-             .duration(200)
-             .style("background-color", colorScale(d.cluster_name))
-             .style("opacity", .9);
+            .duration(200)
+            .style("background-color", colorScale(d.cluster_name))
+            .style("opacity", .9);
 
         tooltip.html(d.Name)
-             .style("left", (d3.event.pageX) + "px")
-             .style("top", (d3.event.pageY) + "px");
+            .style("left", (d3.event.pageX) + "px")
+            .style("top", (d3.event.pageY) + "px");
     }
 }
 
 // Define mouseout action (tooltip disappear) for selected cluster
 function activeClusterMouseout(d) {
     tooltip.transition().duration(500).style("opacity", 0);
+}
+
+function writeGeneTable(data, cluster_name) {
+    var geneTable = document.getElementById("geneTable");
+    // console.log(geneTable);
+    function insertGeneCell(geneTable, geneName, geneDescription) {
+        var row = geneTable.insertRow(-1);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = geneName;
+        cell2.innerHTML = geneDescription;
+    }
+    console.log('clustername: ', cluster_name);
+    var tableHeaderRowCount = 1;
+
+    var rowCount = geneTable.rows.length;
+    for (var i = tableHeaderRowCount; i < rowCount; i++) {
+        geneTable.deleteRow(tableHeaderRowCount);
+    }
+
+
+    data.forEach(gene => {
+        if (gene.cluster_name == cluster_name) {
+            insertGeneCell(geneTable, gene.Name, gene.Description)
+        }
+    });
+
+    // insertGeneCell(geneTable, 'Gene1', '12-gene-3,3-description');
+    // insertGeneCell(geneTable, 'Gene2', '16-gene-3,3-description');
+
 }
